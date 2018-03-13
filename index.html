@@ -30,8 +30,12 @@
 
 <div id='map'></div>
 
-<script>
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.9.1/firebase-firestore.js"></script>
 
+<script>
+  	
+	// Map
 	var map = L.map('map', {
 		crs: L.CRS.Simple,
 		minZoom: -2
@@ -39,37 +43,85 @@
 
     var bea = L.icon({
         iconUrl: 'beacon.png',
-        iconSize: [50, 50],
+        iconSize: [30, 30],
         iconAnchor: [0, 0]
     });
 
-	var bounds = [[0,0], [1833,3283]];
+	var bounds = [[0,0], [1108,1403]];
+	
 	var image = L.imageOverlay('FirstFloor.jpg', bounds).addTo(map);
+
+	var beacons = db.collection("Beacons").doc("AmudaLab");
+	
+	
+	db.collection("Beacons").doc("AmudaLab")
+    .onSnapshot(function(doc) {
+		lat = doc.data().Locationx._lat;
+		long = doc.data().Locationx.r;
+		var b1 = L.latLng([ 18, 600 ]);
+		L.marker((b1), {icon: bea}).addTo(map);
+		//console.log(lat+" "+long);
+    });
+
+
+	db.collection("Users").onSnapshot(function(querySnapshot) {
+			querySnapshot.forEach(function(doc) {
+				console.log(doc.data());
+			});
+	});
+
+
+
     var n=3;
     
-    var b1 = L.latLng([ 1500, 600 ]);
+    var b1 = L.latLng([ 300, 375 ]);
 	L.marker((b1), {icon: bea}).addTo(map);
 
-    var b2 = L.latLng([ 300, 1500 ]);
+    var b2 = L.latLng([ 300, 1025 ]);
 	L.marker((b2), {icon: bea}).addTo(map);
 
-    var b3 = L.latLng([ 1500, 2400 ]);
+    var b3 = L.latLng([ 565, 1065 ]);
 	L.marker((b3), {icon: bea}).addTo(map);
+
+	var b4 = L.latLng([ 585, 520 ]);
+	L.marker((b4), {icon: bea}).addTo(map);
+
+	var b5 = L.latLng([ 585, 830 ]);
+	L.marker((b5), {icon: bea}).addTo(map);
+
+	var b6 = L.latLng([ 200, 100 ]);
+	L.marker((b6), {icon: bea}).addTo(map);
+
+	var b6 = L.latLng([ 200, 1225 ]);
+	L.marker((b6), {icon: bea}).addTo(map);
+
+	var b7 = L.latLng([ 775, 1065 ]);
+	L.marker((b7), {icon: bea}).addTo(map);
+
+	var b8 = L.latLng([ 950, 100 ]);
+	L.marker((b8), {icon: bea}).addTo(map);
+
+	var b9 = L.latLng([ 950, 1200 ]);
+	L.marker((b9), {icon: bea}).addTo(map);
+
+	var b10 = L.latLng([ 905, 670 ]);
+	L.marker((b10), {icon: bea}).addTo(map);
+
+	var b11 = L.latLng([ 165, 675 ]);
+	L.marker((b11), {icon: bea}).addTo(map);
 
     var n=10;
 
     for (i = 1; i < n+1; i++) {
-        var y = Math.floor((Math.random() * 1800) + 1);
-        var x = Math.floor((Math.random() * 3200) + 1);
+        var y = Math.floor((Math.random() * 1108) + 1);
+        var x = Math.floor((Math.random() * 1403) + 1);
         var mark = L.latLng([ y, x ]);
 	    L.marker(mark).addTo(map);
     } 
 
-	map.setView( [900, 1500],-2);
+	map.setView( [554, 701],-0.7);
 
 </script>
-
-
 
 </body>
 </html>

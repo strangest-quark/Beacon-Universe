@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>CRS.Simple example - Leaflet</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
+
+
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+		#map {
+			width: 100%;
+			height: 100%;
+		}
+	</style>
+
+	
+</head>
+<body>
+    
+<div id='map'></div>
+<!-- <div id='no'>
+    <p style="text-align:center" id='para'>Inside AMuDA lab: </p>
+</div> -->
+
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.9.1/firebase-firestore.js"></script>
+
+<script>
+  	
+	// Initialize Firebase
+	var config = {
+		apiKey: "AIzaSyDo3cFmvH3ixb2lJnRvngCn9Ci3erT4FfE",
+		authDomain: "amudalabsmartsenses.firebaseapp.com",
+		databaseURL: "https://amudalabsmartsenses.firebaseio.com",
+		projectId: "amudalabsmartsenses",
+		storageBucket: "amudalabsmartsenses.appspot.com",
+		messagingSenderId: "658035841263"
+	};
+	firebase.initializeApp(config);
+	var db = firebase.firestore();
+
+	db.collection("beacons").get().then((querySnapshot) => {
+    	querySnapshot.forEach((doc) => {
+        	console.log(`${doc.id} => ${doc.data()}`);
+    	});
+	});
+
+
+
+	// Map
+	var map = L.map('map', {
+		crs: L.CRS.Simple,
+		minZoom: -2
+	});
+
+    var bea = L.icon({
+        iconUrl: 'beacon.png',
+        iconSize: [25, 25],
+        iconAnchor: [0, 0]
+    });
+
+    var cir = L.icon({
+        iconUrl: 'black.png',
+        iconSize: [200, 200],
+        iconAnchor: [100, 75]
+    });
+
+	
+	bounds = L.latLngBounds([0,0], [528,1198]);
+	
+	var image = L.imageOverlay('amuda.jpeg', bounds).addTo(map);
+
+	var beacons = db.collection("Beacons").doc("AmudaLab");
+	
+    var n=3;
+    
+    var b1 = L.latLng([ 90, 570 ]);
+	L.marker((b1), {icon: bea}).addTo(map);
+
+    var b2 = L.latLng([ 188, 1100 ]);
+	L.marker((b2), {icon: bea}).addTo(map);
+
+    var b3 = L.latLng([ 395, 1100 ]);
+	L.marker((b3), {icon: bea}).addTo(map);
+
+    var b4 = L.latLng([ 90, 1000 ]);
+	L.marker((b4), {icon: bea}).addTo(map);
+
+    var b5 = L.latLng([ 90, 750 ]);
+	L.marker((b5), {icon: bea}).addTo(map);
+
+    var b6 = L.latLng([ 90, 875 ]);
+	L.marker((b6), {icon: bea}).addTo(map);
+
+    /* var delayInMilliseconds = 1000; 
+    var mark = L.latLng([ 200, 1120 ]);
+    var marker = L.marker(mark, {icon: cir}).addTo(map); 
+    var i=0;
+    marker.bindTooltip('User1 near Beacon '+(i+1));
+    marker.openTooltip();
+    var posy=[110,110,110,110];
+    var posx=[1005,880,755,575];
+    
+    setInterval(function() {
+        var mark = L.latLng(posy[i],posx[i]);
+        i=i+1;
+	    marker.setLatLng(mark); 
+        marker.bindTooltip('User1 near Beacon '+(i+1));
+        marker.openTooltip();
+        if(i==4){
+            document.getElementById('para').innerHTML="Inside AMuDA lab: USER 1";
+            document.getElementById('para').style.color="green";
+        }
+    }, delayInMilliseconds); */
+
+	map.setView( [270, 600]);
+
+</script> 
+</body>
+</html>
